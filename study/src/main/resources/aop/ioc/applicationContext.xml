@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/aop
+        http://www.springframework.org/schema/aop/spring-aop.xsd">
+
+	<context:component-scan base-package="com.yibo.aop.service" />
+	
+<!-- 
+	<bean id="helloWorldService" class="com.yibo.aop.service.impl.HelloWorldService" />
+  -->
+  
+	<bean id="helloWorldAspect" class="com.yibo.aop.aspect.HelloWorldAspect" />
+	<bean id="beforeAdvice" class="com.yibo.aop.aspect.BeforeAdviceImpl"/> 
+	
+	<aop:config>
+		<aop:pointcut id="pointcut" expression="execution(* com.yibo..*.*(..))" />
+		
+		<!-- Advisor -->
+		<aop:advisor pointcut="execution(* com.yibo..*.sayAdvisorBefore(..))"
+			advice-ref="beforeAdvice"/>
+			
+			
+		<aop:aspect ref="helloWorldAspect">
+			<!-- <aop:pointcut id="pointcut" expression="execution(* com.yibo..*.*(..))"/> -->
+			
+			<!-- <aop:before method="beforeAdvice" pointcut-ref="pointcut" />
+			<aop:after method="afterFinallyAdvice" pointcut="execution(* com.yibo..*.*(..))" /> -->
+
+
+
+			<!-- 前置通知 -->
+			<aop:before
+				pointcut="execution(* com.yibo..*.sayBefore(..)) and args(param)"
+				method="beforeAdvice(java.lang.String)" arg-names="param" />
+			<aop:before
+				pointcut="execution(* com.yibo..*.sayBefore(..)) and args(param1,param2)"
+				method="beforeAdvice(java.lang.String,java.lang.Integer)" arg-names="param1,param2" />
+
+
+			<!-- 后置返回通知 -->
+			<!-- <aop:after-returning pointcut="execution(* com.yibo..*.sayAfterReturning(..))" 
+				method="afterReturningAdvice" arg-names="retVal"
+				returning="retVal"/>
+			<aop:after-returning pointcut="execution(* com.yibo..*.sayAfterReturningSecond(..))" 
+				method="afterReturningAdvice" arg-names="retVal"
+				returning="retVal"/> -->
+
+			
+			<!-- 环绕通知 -->
+			<aop:around pointcut="execution(* com.yibo..*.sayAround(..))" 
+           		method="aroundAdvice"/>
+           	<aop:around pointcut="execution(* com.yibo..*.sayAround2(..))" 
+           		method="aroundAdvice2"/>
+			
+			
+		</aop:aspect>
+
+          		
+	</aop:config>
+</beans>
