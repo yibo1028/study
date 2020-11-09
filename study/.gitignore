@@ -1,0 +1,16 @@
+.classpath
+.project
+.idea
+target
+.settings
+.config*
+*.serverId
+*.iml
+assets-builder/
+LOG_PATH_IS_UNDEFINED/
+**/logback-test.xml
+**/.factorypath
+.vscode
+workspace
+.externalToolBuilders
+
